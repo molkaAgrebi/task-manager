@@ -5,7 +5,16 @@
 A secure, responsive task manager built with **React**, **Node.js / Express**, **PostgreSQL** and **Docker**.
 Each user has a private account and can create, edit, prioritise, schedule, search and complete their tasks.
 
-**Live demo:** _coming soon_
+### 🔗 [Live demo](https://task-manager-client-4w1h.onrender.com)
+
+Try it without signing up:
+
+| Email | Password |
+| --- | --- |
+| `demo@flowdesk.demo` | `demo-flowdesk-2026` |
+
+> Hosted on Render's free plan: if nobody has used the API for a while, the first request
+> can take about 30–50 seconds while the server wakes up.
 
 ![Dashboard in dark mode](docs/screenshots/dashboard-dark.png)
 
