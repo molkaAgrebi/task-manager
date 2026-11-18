@@ -1,0 +1,188 @@
+/* =========================================================
+   Login / register page: two columns.
+   ========================================================= */
+
+.auth {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  min-height: 100vh;
+}
+
+/* ---------- Left: animated gradient ---------- */
+.auth__visual {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  padding: var(--space-7);
+  background: #0e0b24;
+  color: #fff;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.8;
+  animation: float 14s ease-in-out infinite alternate;
+}
+
+.blob--1 { width: 420px; height: 420px; background: var(--brand-1); top: -80px; left: -60px; }
+.blob--2 { width: 360px; height: 360px; background: var(--brand-2); bottom: -60px; right: -40px; animation-delay: -5s; }
+.blob--3 { width: 260px; height: 260px; background: #c084fc; top: 40%; left: 35%; animation-delay: -9s; opacity: 0.55; }
+
+@keyframes float {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(40px, -30px) scale(1.12); }
+}
+
+/* Thin grid on top of the gradient for texture */
+.auth__visual::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(to top, black, transparent 80%);
+}
+
+.auth__pitch {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: var(--space-4);
+  max-width: 440px;
+}
+
+.auth__pitch h2 { font-size: var(--text-2xl); }
+.auth__pitch p { font-size: var(--text-md); color: rgba(255, 255, 255, 0.85); }
+
+/* ---------- Right: form ---------- */
+.auth__panel {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-5);
+}
+
+.auth__top {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.auth__mobile-logo { display: none; }
+
+.auth__card {
+  width: 100%;
+  max-width: 420px;
+  margin: auto;
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  animation: rise var(--slow) var(--ease);
+}
+
+.auth__card > .muted { margin: var(--space-2) 0 var(--space-5); }
+
+.auth__card form {
+  display: grid;
+  gap: var(--space-4);
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ---------- Floating label fields ---------- */
+.field { position: relative; }
+
+.field input {
+  width: 100%;
+  height: 56px;
+  padding: 22px var(--space-4) 6px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  outline: none;
+  transition: border-color var(--fast) var(--ease), box-shadow var(--fast) var(--ease);
+}
+
+.field label {
+  position: absolute;
+  left: var(--space-4);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+  transform-origin: left center;
+  transition: transform var(--fast) var(--ease), top var(--fast) var(--ease), color var(--fast);
+}
+
+/* Field focused OR not empty -> label goes up and shrinks */
+.field input:focus + label,
+.field input:not(:placeholder-shown) + label {
+  top: 16px;
+  transform: translateY(-50%) scale(0.8);
+}
+
+.field input:focus {
+  border-color: var(--accent);
+  box-shadow: var(--glow);
+}
+
+.field input:focus + label { color: var(--accent); }
+
+.field input[aria-invalid="true"] { border-color: var(--danger); }
+
+.hint {
+  margin-top: calc(var(--space-2) * -1);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+.form-error {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  background: var(--danger-bg);
+  color: var(--danger);
+  font-weight: 500;
+  animation: rise var(--normal) var(--ease);
+}
+
+.auth__switch {
+  margin-top: var(--space-5);
+  text-align: center;
+  color: var(--text-muted);
+}
+
+/* ---------- Tablet and mobile: one column ---------- */
+@media (max-width: 860px) {
+  .auth { grid-template-columns: 1fr; }
+
+  /* The gradient becomes a band at the top */
+  .auth__visual {
+    position: fixed;
+    inset: 0 0 auto 0;
+    height: 260px;
+    padding: 0;
+  }
+
+  .auth__pitch { display: none; }
+
+  .auth__visual::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(to bottom, transparent 30%, var(--bg));
+  }
+
+  .auth__panel { position: relative; padding: var(--space-4); }
+
+  .auth__top { justify-content: space-between; color: #fff; }
+  .auth__mobile-logo { display: inline-flex; }
+  .auth__top .icon-btn { background: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.2); color: #fff; }
+
+  .auth__card { margin: var(--space-7) auto var(--space-5); padding: var(--space-5); }
+}
