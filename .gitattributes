@@ -1,0 +1,3 @@
+# Store text files with Unix line endings (needed by Docker and shell scripts)
+* text=auto eol=lf
+*.png binary
