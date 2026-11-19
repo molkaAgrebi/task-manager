@@ -123,7 +123,7 @@ export default function Dashboard({ token, email, onLogout, notify }) {
         </div>
       </header>
 
-      <main className="board">
+      <main className={`board${view === "progress" ? " board--fit" : ""}`}>
         {/* Two views of the same data */}
         <nav className="view-tabs" aria-label="Views">
           <button type="button" aria-current={view === "tasks" ? "page" : undefined} onClick={() => setView("tasks")}>
@@ -138,10 +138,8 @@ export default function Dashboard({ token, email, onLogout, notify }) {
 
         {view === "progress" ? (
           <>
-            <section className="board__intro">
-              <h1>Your progress</h1>
-              <p className="muted">See how far you've come, one task at a time.</p>
-            </section>
+            {/* The tab already says "Progress": the title is only for screen readers */}
+            <h1 className="sr-only">Your progress</h1>
             {loading ? <Skeleton /> : <ProgressView tasks={tasks} />}
           </>
         ) : (

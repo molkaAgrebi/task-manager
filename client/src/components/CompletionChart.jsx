@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-// Bar chart: tasks completed per day over the last 14 days.
+// Bar chart: tasks completed per day over the last 7 days.
 // One series, so no legend: the card title names it.
 // Hover (or keyboard focus) on a day shows a tooltip.
 export default function CompletionChart({ days }) {
@@ -69,14 +69,14 @@ export default function CompletionChart({ days }) {
       <div className="chart__axis" aria-hidden="true">
         {days.map((d, i) => (
           <span key={d.date} className={i === lastIndex ? "chart__axis--today" : ""}>
-            {pretty(d.date, { day: "numeric" })}
+            {i === lastIndex ? "Today" : pretty(d.date, { weekday: "short" })}
           </span>
         ))}
       </div>
 
       {/* Same data as a table, for screen readers */}
       <table className="sr-only">
-        <caption>Tasks completed per day, last 14 days</caption>
+        <caption>Tasks completed per day, last 7 days</caption>
         <thead>
           <tr><th>Day</th><th>Completed</th></tr>
         </thead>

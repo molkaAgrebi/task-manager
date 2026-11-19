@@ -35,9 +35,9 @@ export function computeStats(tasks) {
     }
   }
 
-  // Last 14 days, oldest first (for the chart)
+  // Last 7 days, oldest first (for the chart)
   const days = [];
-  for (let i = 13; i >= 0; i--) {
+  for (let i = 6; i >= 0; i--) {
     const date = daysAgo(i);
     days.push({ date, count: perDay[date] || 0 });
   }

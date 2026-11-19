@@ -28,7 +28,7 @@ Try it without signing up:
 - **Find things fast**: filters (All / To do / Done), live search, and sorting by date, due date, priority or title.
 - **Progress at a glance**: a progress ring and counters on the task list.
 - **Progress page for motivation**: daily streak, a message adapted to the user's situation, this week
-  vs last week, on-time rate, a 14-day bar chart, and milestones to unlock.
+  vs last week, on-time rate, a 7-day bar chart and milestones, all on one screen.
 - **Polished UI**: dark and light themes (choice remembered), glassmorphism, micro-animations,
   skeleton loading, toast notifications, and a friendly empty state.
 - **Responsive and accessible**: works from 360 px phones to desktops, keyboard focus is always visible,
