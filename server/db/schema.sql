@@ -23,5 +23,11 @@ ALTER TABLE tasks ADD COLUMN IF NOT EXISTS due_date DATE;
 ALTER TABLE tasks ADD COLUMN IF NOT EXISTS priority VARCHAR(10) NOT NULL DEFAULT 'medium'
   CHECK (priority IN ('low', 'medium', 'high'));
 
+-- Added later: when the task was checked (for the progress page).
+-- TIMESTAMPTZ stores the exact moment, whatever the time zone.
+ALTER TABLE tasks ADD COLUMN IF NOT EXISTS completed_at TIMESTAMPTZ;
+-- Tasks finished before this column existed: use their creation date.
+UPDATE tasks SET completed_at = created_at WHERE done AND completed_at IS NULL;
+
 -- Speeds up "WHERE user_id = $1", used by every task query
 CREATE INDEX IF NOT EXISTS tasks_user_id_idx ON tasks(user_id);

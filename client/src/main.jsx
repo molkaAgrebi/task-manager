@@ -6,6 +6,7 @@ import "./styles/variables.css";
 import "./styles/base.css";
 import "./styles/auth.css";
 import "./styles/dashboard.css";
+import "./styles/progress.css";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

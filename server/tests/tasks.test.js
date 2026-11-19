@@ -79,6 +79,24 @@ describe("Update", () => {
     expect(res.body).toMatchObject({ title: "Write final report", done: true, priority: "low", due_date: "2026-12-10" });
   });
 
+  test("records when a task is completed, and clears it when unchecked", async () => {
+    const id = (await as(alice).post("/tasks").send({ title: "Track me" })).body.id;
+
+    const before = Date.now();
+    const checked = await as(alice).put(`/tasks/${id}`).send({ done: true });
+    expect(checked.body.completed_at).not.toBeNull();
+    expect(Math.abs(new Date(checked.body.completed_at) - before)).toBeLessThan(60000);
+
+    // Renaming a finished task keeps its completion date
+    const renamed = await as(alice).put(`/tasks/${id}`).send({ title: "Tracked" });
+    expect(renamed.body.completed_at).toBe(checked.body.completed_at);
+
+    const unchecked = await as(alice).put(`/tasks/${id}`).send({ done: false });
+    expect(unchecked.body.completed_at).toBeNull();
+
+    await as(alice).delete(`/tasks/${id}`);
+  });
+
   test("removes the due date with null", async () => {
     const res = await as(alice).put(`/tasks/${taskId}`).send({ due_date: null });
     expect(res.body.due_date).toBeNull();

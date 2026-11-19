@@ -6,7 +6,7 @@ const { checkTitle, checkPriority, checkDueDate } = require("../validation");
 const router = express.Router();
 
 // Columns sent back to the front end
-const COLUMNS = "id, title, done, priority, due_date, created_at";
+const COLUMNS = "id, title, done, priority, due_date, created_at, completed_at";
 
 // Every route in this file requires a valid token.
 // After this line, req.user.id is the id of the logged-in user.
@@ -86,6 +86,11 @@ router.put("/:id", async (req, res) => {
         return res.status(400).json({ error: "Done must be true or false" });
       }
       addChange("done", body.done);
+      // Remember when the task was finished; forget it if it is unchecked.
+      // Same parameter as "done" ($n), so still no user text inside the SQL.
+      changes.push(
+        `completed_at = CASE WHEN $${values.length}::boolean THEN COALESCE(completed_at, NOW()) ELSE NULL END`
+      );
     }
     if (body.priority !== undefined) {
       const error = checkPriority(body.priority);

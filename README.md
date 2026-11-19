@@ -26,13 +26,17 @@ Try it without signing up:
 - **Tasks**: add, edit inline, check off and delete (with a confirmation step).
 - **Priority and due dates**: high / medium / low, plus "Overdue", "Due today" and "Due tomorrow" badges.
 - **Find things fast**: filters (All / To do / Done), live search, and sorting by date, due date, priority or title.
-- **Progress at a glance**: counters and a progress bar.
+- **Progress at a glance**: a progress ring and counters on the task list.
+- **Progress page for motivation**: daily streak, a message adapted to the user's situation, this week
+  vs last week, on-time rate, a 14-day bar chart, and milestones to unlock.
 - **Polished UI**: dark and light themes (choice remembered), glassmorphism, micro-animations,
   skeleton loading, toast notifications, and a friendly empty state.
 - **Responsive and accessible**: works from 360 px phones to desktops, keyboard focus is always visible,
   ARIA labels on controls, and animations are disabled when the OS asks for reduced motion.
 
 ## Screenshots
+
+![Progress page with streak, weekly stats, chart and milestones](docs/screenshots/progress-dark.png)
 
 | Login | Light theme + inline editing |
 | --- | --- |
@@ -50,7 +54,7 @@ Try it without signing up:
 | Back end | Node.js 22, Express 5, `pg`, bcrypt, jsonwebtoken |
 | Security | helmet, express-rate-limit, CORS allow-list, input validation |
 | Database | PostgreSQL (17 in Docker) |
-| Tests | Jest + Supertest (28 API tests against a real database) |
+| Tests | Jest + Supertest (29 API tests against a real database) |
 | DevOps | Docker, Docker Compose, Nginx, GitHub Actions CI, Render blueprint |
 
 ## Project structure

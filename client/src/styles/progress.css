@@ -1,0 +1,350 @@
+/* =========================================================
+   View tabs + the Progress page (streak, numbers, chart, badges)
+   ========================================================= */
+
+/* ---------- Tasks / Progress tabs ---------- */
+.view-tabs {
+  display: inline-flex;
+  justify-self: start;
+  gap: var(--space-1);
+  padding: var(--space-1);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.view-tabs button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 36px;
+  padding: 0 var(--space-4);
+  border: 0;
+  border-radius: 9px;
+  background: none;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--fast), color var(--fast);
+}
+
+.view-tabs button:hover { color: var(--text); }
+
+.view-tabs button[aria-current="page"] {
+  background: var(--surface-strong);
+  color: var(--text);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12);
+}
+
+.progress-view {
+  display: grid;
+  gap: var(--space-4);
+  animation: rise var(--slow) var(--ease);
+}
+
+.progress-view h2 { font-size: var(--text-lg); }
+
+/* ---------- 1. Motivation + streak ---------- */
+.hero-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  padding: var(--space-5) var(--space-6);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background:
+    radial-gradient(420px circle at 0% 0%, var(--accent-soft), transparent 70%),
+    var(--surface);
+  overflow: hidden;
+}
+
+.hero-card__text { display: grid; gap: var(--space-1); max-width: 46ch; }
+.hero-card__text p { color: var(--text-muted); }
+
+.streak {
+  display: grid;
+  justify-items: center;
+  flex: none;
+  min-width: 110px;
+  color: var(--text-muted);
+}
+
+.streak__flame { fill: currentColor; opacity: 0.5; }
+.streak--on .streak__flame { color: var(--warning); opacity: 1; animation: flicker 2.4s ease-in-out infinite; }
+
+@keyframes flicker {
+  50% { transform: scale(1.08) rotate(-3deg); }
+}
+
+.streak__number {
+  font-family: var(--font-heading);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.streak__label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ---------- 2. Key numbers ---------- */
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin: 0;
+}
+
+.kpi {
+  display: grid;
+  align-content: start;
+  gap: 2px;
+  padding: var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+}
+
+.kpi dt {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.kpi dd { margin: 0; }
+
+.kpi__value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+
+.kpi__value small { font-size: var(--text-xs); font-weight: 600; color: var(--text-muted); }
+
+.kpi__sub { font-size: 0.8125rem; color: var(--text-muted); }
+.kpi__sub--up { color: var(--success); font-weight: 600; }
+
+/* ---------- Panels (chart, badges) ---------- */
+.panel {
+  padding: var(--space-5);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+}
+
+.panel__head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.panel__head .muted { font-size: var(--text-xs); }
+
+/* ---------- 3. Bar chart ---------- */
+.chart { margin: 0; }
+
+.chart__plot {
+  position: relative;
+  height: 190px;
+  margin: var(--space-5) 0 0 26px; /* left room for the scale numbers */
+}
+
+.chart__grid span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 1px dashed var(--border);
+}
+
+.chart__grid .chart__baseline { border-top: 1px solid var(--border-strong); }
+
+.chart__grid em {
+  position: absolute;
+  left: -26px;
+  width: 18px;
+  transform: translateY(-50%);
+  text-align: right;
+  font-style: normal;
+  font-size: 0.6875rem;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.chart__bars {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  gap: 2px; /* spacer between columns */
+}
+
+/* Each column is the hover/focus target (bigger than the bar itself) */
+.chart__col {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  border-radius: 6px;
+  outline-offset: 2px;
+}
+
+.chart__col--active { background: var(--surface-strong); }
+
+.chart__bar {
+  width: min(70%, 22px);
+  border-radius: 4px 4px 0 0; /* rounded data end, flat on the baseline */
+  background: var(--accent);
+  transition: height var(--slow) var(--ease);
+}
+
+.chart__bar--zero {
+  height: 2px;
+  border-radius: 1px;
+  background: var(--border-strong);
+}
+
+.chart__value {
+  position: absolute;
+  margin-bottom: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.chart__tip {
+  position: absolute;
+  top: -10px;
+  z-index: 2;
+  display: grid;
+  gap: 1px;
+  padding: 6px 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: 9px;
+  background: var(--popover-bg);
+  box-shadow: var(--popover-shadow);
+  font-size: 0.75rem;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translate(-50%, -100%);
+}
+
+.chart__tip--start { transform: translate(-20%, -100%); }
+.chart__tip--end { transform: translate(-80%, -100%); }
+.chart__tip-date { color: var(--text-muted); }
+
+.chart__axis {
+  display: flex;
+  gap: 2px;
+  margin: 6px 0 0 26px;
+}
+
+.chart__axis span {
+  flex: 1;
+  text-align: center;
+  font-size: 0.6875rem;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.chart__axis .chart__axis--today { color: var(--accent); font-weight: 700; }
+
+/* ---------- 4. Milestones ---------- */
+.next-goal { margin-bottom: var(--space-4); }
+
+.next-goal__label {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+.next-goal__label strong { color: var(--text); }
+.next-goal__count { font-weight: 700; color: var(--text); font-variant-numeric: tabular-nums; }
+
+.next-goal__track {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--surface-strong);
+  overflow: hidden;
+}
+
+.next-goal__track > div {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--gradient);
+  transition: width var(--slow) var(--ease);
+}
+
+.badges {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.badge-tile {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text-muted);
+}
+
+.badge-tile__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--surface-strong);
+}
+
+.badge-tile__text { display: grid; min-width: 0; font-size: 0.8125rem; line-height: 1.35; }
+.badge-tile__text strong { font-size: var(--text-xs); color: var(--text-muted); }
+
+.badge-tile--on { border-color: transparent; background: var(--accent-soft); }
+.badge-tile--on .badge-tile__icon { background: var(--gradient); color: #fff; }
+.badge-tile--on .badge-tile__text strong { color: var(--text); }
+
+/* ---------- Mobile ---------- */
+@media (max-width: 760px) {
+  .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 600px) {
+  .view-tabs { display: flex; justify-self: stretch; }
+  .view-tabs button { flex: 1; justify-content: center; }
+
+  .hero-card { padding: var(--space-4); gap: var(--space-3); }
+  .streak { min-width: 76px; }
+  .streak__number { font-size: var(--text-xl); }
+
+  .panel { padding: var(--space-4); }
+  .badges { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .badge-tile { flex-direction: column; align-items: flex-start; gap: var(--space-2); }
+  .chart__plot { height: 160px; }
+  .chart__bar { width: 80%; }
+}
