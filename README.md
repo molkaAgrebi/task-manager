@@ -36,7 +36,17 @@ Try it without signing up:
 
 ## Screenshots
 
-![Progress page with streak, weekly stats, chart and milestones](docs/screenshots/progress-dark.png)
+### Progress page
+
+Streak, weekly numbers, a 7-day chart and milestones, all on one screen.
+
+| Dark | Light |
+| --- | --- |
+| ![Progress page in dark mode](docs/screenshots/progress-dark.png) | ![Progress page in light mode](docs/screenshots/progress-light.png) |
+
+<p align="center"><img src="docs/screenshots/progress-mobile.png" alt="Progress page on a phone" width="300"></p>
+
+### Tasks
 
 | Login | Light theme + inline editing |
 | --- | --- |
