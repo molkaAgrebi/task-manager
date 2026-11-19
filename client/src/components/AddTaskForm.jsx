@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { PRIORITIES } from "../utils/tasks";
+import Menu from "./Menu";
+import DatePicker from "./DatePicker";
 
-// The "new task" form: title + priority + optional due date.
+// The "new task" bar: title + priority + optional due date, all on one line.
 // onAdd({ title, priority, due_date }) must return a promise.
 export default function AddTaskForm({ onAdd }) {
   const [title, setTitle] = useState("");
@@ -28,43 +30,25 @@ export default function AddTaskForm({ onAdd }) {
   }
 
   return (
-    <form className="add-task glass" onSubmit={handleSubmit}>
-      <div className="add-task__main">
-        <label htmlFor="new-task" className="sr-only">New task</label>
-        <span className="add-task__plus" aria-hidden="true">+</span>
-        <input
-          id="new-task"
-          type="text"
-          placeholder="What do you need to do?"
-          value={title}
-          maxLength={200}
-          onChange={(e) => setTitle(e.target.value)}
-          autoComplete="off"
-        />
-        <button type="submit" className="btn btn--primary" disabled={adding || !title.trim()} aria-busy={adding}>
-          {adding && <span className="spinner" aria-hidden="true" />}
-          {adding ? "Adding…" : "Add task"}
+    <form className="composer" onSubmit={handleSubmit}>
+      <label htmlFor="new-task" className="sr-only">New task</label>
+      <input
+        id="new-task"
+        className="composer__input"
+        type="text"
+        placeholder="Add a task…"
+        value={title}
+        maxLength={200}
+        onChange={(e) => setTitle(e.target.value)}
+        autoComplete="off"
+      />
+      <div className="composer__tools">
+        <Menu label="Priority" value={priority} options={PRIORITIES} onChange={setPriority} dots />
+        <DatePicker value={dueDate} onChange={setDueDate} />
+        <button type="submit" className="btn btn--primary composer__add" disabled={adding || !title.trim()} aria-busy={adding}>
+          {adding ? <span className="spinner" aria-hidden="true" /> : <span aria-hidden="true">+</span>}
+          {adding ? "Adding…" : "Add"}
         </button>
-      </div>
-
-      <div className="add-task__options">
-        <label className="mini-field">
-          <span>Priority</span>
-          <select value={priority} onChange={(e) => setPriority(e.target.value)}>
-            {PRIORITIES.map((p) => (
-              <option key={p.value} value={p.value}>{p.label}</option>
-            ))}
-          </select>
-        </label>
-        <label className="mini-field">
-          <span>Due date</span>
-          <input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} />
-        </label>
-        {dueDate && (
-          <button type="button" className="link-btn add-task__clear" onClick={() => setDueDate("")}>
-            Clear date
-          </button>
-        )}
       </div>
     </form>
   );

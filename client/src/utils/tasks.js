@@ -8,12 +8,32 @@ export const PRIORITIES = [
 
 const PRIORITY_RANK = { high: 0, medium: 1, low: 2 };
 
-// Today's date as "YYYY-MM-DD" in the user's own time zone.
+// A Date as "YYYY-MM-DD" in the user's own time zone.
+export function toDateString(date) {
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${date.getFullYear()}-${month}-${day}`;
+}
+
 export function todayString() {
-  const now = new Date();
-  const month = String(now.getMonth() + 1).padStart(2, "0");
-  const day = String(now.getDate()).padStart(2, "0");
-  return `${now.getFullYear()}-${month}-${day}`;
+  return toDateString(new Date());
+}
+
+// "YYYY-MM-DD" for today + n days
+export function addDays(n) {
+  const date = new Date();
+  date.setDate(date.getDate() + n);
+  return toDateString(date);
+}
+
+// Short text for a chosen date: "Today", "Tomorrow", "Yesterday" or "24 Nov"
+export function shortDateLabel(dateString) {
+  const days = daysFromToday(dateString);
+  if (days === 0) return "Today";
+  if (days === 1) return "Tomorrow";
+  if (days === -1) return "Yesterday";
+  const [y, m, d] = dateString.split("-").map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString("en-GB", { day: "numeric", month: "short" });
 }
 
 // Number of days between today and a "YYYY-MM-DD" date (negative = past).

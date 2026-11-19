@@ -62,6 +62,9 @@
   --warning-text: #fbbf24;
   --warning-bg: rgba(251, 191, 36, 0.14);
   --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  --popover-bg: #171a2b;      /* solid (not glass) so menus stay readable */
+  --popover-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
+  --accent-soft: rgba(124, 108, 255, 0.16);
   --glow: 0 0 0 4px rgba(124, 108, 255, 0.28);
 }
 
@@ -85,5 +88,8 @@
   --warning-text: #92400e; /* darker amber: readable text on light background */
   --warning-bg: rgba(245, 158, 11, 0.14);
   --shadow: 0 10px 30px rgba(20, 22, 43, 0.08);
+  --popover-bg: #ffffff;
+  --popover-shadow: 0 18px 50px rgba(20, 22, 43, 0.16);
+  --accent-soft: rgba(91, 75, 232, 0.1);
   --glow: 0 0 0 4px rgba(91, 75, 232, 0.22);
 }

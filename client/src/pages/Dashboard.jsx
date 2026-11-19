@@ -121,18 +121,20 @@ export default function Dashboard({ token, email, onLogout, notify }) {
       </header>
 
       <main className="board">
-        <section className="board__intro">
-          <h1>Your tasks</h1>
-          <p className="muted">
-            {loading
-              ? "Loading your list…"
-              : counts.todo === 0 && counts.all > 0
-              ? "Everything is done. Nice work!"
-              : `${counts.todo} ${counts.todo === 1 ? "task" : "tasks"} left to do.`}
-          </p>
-        </section>
-
-        <Stats total={counts.all} done={counts.done} />
+        {/* Title on the left, progress on the right */}
+        <div className="board__head">
+          <section className="board__intro">
+            <h1>Your tasks</h1>
+            <p className="muted">
+              {loading
+                ? "Loading your list…"
+                : counts.todo === 0 && counts.all > 0
+                ? "Everything is done. Nice work!"
+                : `${counts.todo} ${counts.todo === 1 ? "task" : "tasks"} left to do.`}
+            </p>
+          </section>
+          <Stats total={counts.all} done={counts.done} />
+        </div>
 
         <AddTaskForm onAdd={handleAdd} />
 
@@ -141,7 +143,7 @@ export default function Dashboard({ token, email, onLogout, notify }) {
           <Toolbar search={search} onSearch={setSearch} sort={sort} onSort={setSort} />
         </div>
 
-        <section aria-label="Task list" aria-busy={loading}>
+        <section className="board__list" aria-label="Task list" aria-busy={loading}>
           {loading ? (
             <Skeleton />
           ) : loadError ? (

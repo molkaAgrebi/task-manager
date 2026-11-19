@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { PRIORITIES, describeDueDate } from "../utils/tasks";
+import Menu from "./Menu";
+import DatePicker from "./DatePicker";
 
 const EXIT_DURATION = 220; // ms, same as the CSS animation
 
@@ -172,18 +174,8 @@ function EditForm({ task, onSave, onCancel }) {
         onChange={(e) => setTitle(e.target.value)}
       />
       <div className="edit-form__row">
-        <label className="mini-field">
-          <span>Priority</span>
-          <select value={priority} onChange={(e) => setPriority(e.target.value)}>
-            {PRIORITIES.map((p) => (
-              <option key={p.value} value={p.value}>{p.label}</option>
-            ))}
-          </select>
-        </label>
-        <label className="mini-field">
-          <span>Due date</span>
-          <input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} />
-        </label>
+        <Menu label="Priority" value={priority} options={PRIORITIES} onChange={setPriority} dots />
+        <DatePicker value={dueDate} onChange={setDueDate} />
         <div className="edit-form__buttons">
           <button type="button" className="btn btn--ghost btn--small" onClick={onCancel}>Cancel</button>
           <button type="submit" className="btn btn--primary btn--small" disabled={saving || !title.trim()}>

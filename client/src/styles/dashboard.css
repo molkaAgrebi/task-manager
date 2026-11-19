@@ -1,5 +1,6 @@
 /* =========================================================
-   Dashboard: header, stats, add form, filters, toolbar, task cards.
+   Dashboard: header, progress, composer, toolbar, task cards,
+   and the custom menus / date picker.
    ========================================================= */
 
 .dashboard {
@@ -7,7 +8,7 @@
   min-height: 100vh;
 }
 
-/* Soft colored glow behind the glass cards */
+/* Soft colored glow behind the glass surfaces */
 .backdrop {
   position: fixed;
   inset: 0;
@@ -75,133 +76,122 @@
 /* ---------- Main column ---------- */
 .board {
   display: grid;
-  gap: var(--space-5);
+  gap: var(--space-6);
   width: 100%;
   max-width: 760px;
   margin: 0 auto;
-  padding: var(--space-6) var(--space-5) var(--space-7);
+  padding: var(--space-7) var(--space-5) var(--space-7);
+}
+
+/* Title + progress side by side */
+.board__head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--space-5);
 }
 
 .board__intro h1 { font-size: var(--text-2xl); }
 .board__intro .muted { margin-top: var(--space-1); }
 
-/* ---------- Stats + progress ---------- */
-.stats { padding: var(--space-5); }
+/* The list area: toolbar and cards sit closer together */
+.board__list { margin-top: calc(var(--space-3) * -1); }
 
-.stats__grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  margin: 0 0 var(--space-5);
+/* ---------- Progress ring + counters ---------- */
+.progress-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  padding: var(--space-3) var(--space-5) var(--space-3) var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--surface);
 }
 
-.stats__grid div + div { border-left: 1px solid var(--border); padding-left: var(--space-4); }
+.ring {
+  position: relative;
+  flex: none;
+  width: 60px;
+  height: 60px;
+}
 
-.stats dt {
+.ring svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg); /* start the circle at the top */
+}
+
+.ring__track,
+.ring__fill {
+  fill: none;
+  stroke-width: 6;
+}
+
+.ring__track { stroke: var(--surface-strong); }
+
+.ring__fill {
+  stroke-linecap: round;
+  transition: stroke-dashoffset var(--slow) var(--ease);
+}
+
+.ring__value {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
   font-size: var(--text-xs);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.mini-stats {
+  display: flex;
+  gap: var(--space-5);
+  margin: 0;
+}
+
+.mini-stats dt {
+  font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--text-muted);
 }
 
-.stats dd {
+.mini-stats dd {
   margin: 0;
-  font-family: var(--font-heading);
-  font-size: var(--text-xl);
+  font-size: var(--text-lg);
   font-weight: 700;
+  line-height: 1.2;
   font-variant-numeric: tabular-nums;
 }
 
-.stats__done { color: var(--success); }
+.mini-stats__done { color: var(--success); }
 
-.progress__label {
+/* ---------- Composer (add a task) ---------- */
+.composer {
   display: flex;
-  justify-content: space-between;
-  margin-bottom: var(--space-2);
-  font-size: var(--text-xs);
-  color: var(--text-muted);
-  font-variant-numeric: tabular-nums;
-}
-
-.progress__track {
-  height: 8px;
-  border-radius: 999px;
-  background: var(--surface-strong);
-  overflow: hidden;
-}
-
-.progress__fill {
-  height: 100%;
-  border-radius: inherit;
-  background: var(--gradient);
-  transition: width var(--slow) var(--ease);
-}
-
-/* ---------- Small labelled select / date ("mini fields") ---------- */
-.mini-field {
-  display: inline-flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--space-2);
-  font-size: var(--text-xs);
-  font-weight: 600;
-  color: var(--text-muted);
-}
-
-.mini-field select,
-.mini-field input {
-  height: 36px;
-  padding: 0 var(--space-3);
-  border: 1px solid var(--border-strong);
-  border-radius: 9px;
+  padding: var(--space-2) var(--space-2) var(--space-2) var(--space-5);
+  border: 1px solid var(--border);
+  border-radius: 16px;
   background: var(--surface);
-  font-size: var(--text-xs);
-  font-weight: 500;
-  color: var(--text);
-  cursor: pointer;
-  transition: border-color var(--fast);
-}
-
-.mini-field select:hover,
-.mini-field input:hover { border-color: var(--accent); }
-
-/* Native dropdown options must stay readable in dark mode */
-.mini-field option { background: var(--bg); color: var(--text); }
-
-/* ---------- Add task ---------- */
-.add-task {
-  display: grid;
-  gap: var(--space-2);
-  padding: var(--space-2);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--shadow);
   transition: border-color var(--fast), box-shadow var(--fast);
 }
 
-.add-task:focus-within {
+.composer:focus-within {
   border-color: var(--accent);
   box-shadow: var(--shadow), var(--glow);
 }
 
-.add-task__main {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-.add-task__plus {
-  display: grid;
-  place-items: center;
-  flex: none;
-  width: 32px;
-  height: 32px;
-  margin-left: var(--space-2);
-  border-radius: 9px;
-  background: var(--gradient);
-  color: #fff;
-  font-size: 20px;
-  font-weight: 600;
-}
-
-.add-task__main input {
-  flex: 1;
+.composer__input {
+  flex: 1 1 220px;
   min-width: 0;
   height: 44px;
   border: 0;
@@ -210,20 +200,201 @@
   outline: none;
 }
 
-.add-task__main input::placeholder { color: var(--text-muted); }
+.composer__input::placeholder { color: var(--text-muted); }
 
-.add-task__options {
+.composer__tools {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: var(--space-2) var(--space-4);
-  padding: var(--space-2) var(--space-2) var(--space-1);
-  border-top: 1px solid var(--border);
+  gap: var(--space-2);
 }
 
-.add-task__clear { font-size: var(--text-xs); }
+.composer__add { min-height: 40px; padding: 0 var(--space-4); }
 
-/* ---------- Filters + toolbar ---------- */
+/* ---------- Chip buttons (open a menu or the date picker) ---------- */
+.menu-root { position: relative; }
+
+.chip-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 36px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--fast), color var(--fast), border-color var(--fast);
+}
+
+.chip-btn:hover { background: var(--surface-strong); color: var(--text); }
+.chip-btn--open { border-color: var(--accent); color: var(--text); background: var(--surface-strong); }
+.chip-btn--filled { color: var(--accent); background: var(--accent-soft); border-color: transparent; }
+
+.chip-btn__prefix { font-weight: 500; }
+.chip-btn__chevron { opacity: 0.7; transition: transform var(--fast) var(--ease); }
+.chip-btn--open .chip-btn__chevron { transform: rotate(180deg); }
+
+/* Priority dots */
+.dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.dot--high { background: var(--danger); }
+.dot--medium { background: var(--warning); }
+.dot--low { background: var(--accent-2); }
+
+/* ---------- Floating panel (menus + date picker) ---------- */
+.popover {
+  position: fixed;
+  z-index: 100;
+  padding: 6px;
+  border: 1px solid var(--border-strong);
+  border-radius: 14px;
+  background: var(--popover-bg);
+  box-shadow: var(--popover-shadow);
+  color: var(--text);
+  font-family: var(--font-body);
+  animation: popover-in var(--fast) var(--ease);
+}
+
+@keyframes popover-in {
+  from { opacity: 0; transform: translateY(-4px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+
+.menu {
+  min-width: 190px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  outline: none;
+}
+
+.menu__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 9px;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.menu__item--active { background: var(--surface-strong); }
+.menu__label { flex: 1; }
+.menu__check { color: var(--accent); }
+
+/* ---------- Date picker ---------- */
+.datepicker {
+  width: 292px;
+  max-width: calc(100vw - 24px);
+  padding: 6px;
+}
+
+.datepicker__quick {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.quick-btn {
+  height: 34px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--fast), border-color var(--fast);
+}
+
+.quick-btn:hover { border-color: var(--accent); }
+.quick-btn--on { background: var(--accent-strong); border-color: transparent; color: #fff; }
+
+.datepicker__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: var(--space-3) 0 var(--space-1);
+}
+
+.datepicker__month {
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+
+.cal-nav {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.cal-nav:hover { background: var(--surface-strong); color: var(--text); }
+
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.calendar__weekday {
+  padding: 6px 0;
+  text-align: center;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.calendar__day {
+  height: 36px;
+  border: 0;
+  border-radius: 9px;
+  background: none;
+  font-size: var(--text-xs);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: background-color var(--fast);
+}
+
+.calendar__day:hover { background: var(--surface-strong); }
+.calendar__day--past { color: var(--text-muted); }
+.calendar__day--today { color: var(--accent); font-weight: 700; box-shadow: inset 0 0 0 1.5px var(--accent); }
+.calendar__day--selected,
+.calendar__day--selected:hover { background: var(--accent-strong); color: #fff; box-shadow: none; }
+
+.datepicker__clear {
+  width: 100%;
+  height: 34px;
+  margin-top: var(--space-2);
+  border: 0;
+  border-radius: 9px;
+  background: none;
+  color: var(--danger);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.datepicker__clear:hover { background: var(--danger-bg); }
+
+/* ---------- Filters + toolbar (one light row, no boxes) ---------- */
 .controls {
   display: flex;
   flex-wrap: wrap;
@@ -235,22 +406,19 @@
 .filters {
   display: inline-flex;
   gap: var(--space-1);
-  padding: var(--space-1);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--surface);
 }
 
 .filters__btn {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  min-height: 40px;
-  padding: 0 var(--space-4);
+  height: 36px;
+  padding: 0 var(--space-3);
   border: 0;
-  border-radius: 9px;
+  border-radius: 10px;
   background: none;
   color: var(--text-muted);
+  font-size: var(--text-sm);
   font-weight: 600;
   cursor: pointer;
   transition: background-color var(--fast) var(--ease), color var(--fast) var(--ease);
@@ -261,15 +429,14 @@
 .filters__btn[aria-pressed="true"] {
   background: var(--surface-strong);
   color: var(--text);
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.15);
 }
 
 .filters__count {
-  min-width: 22px;
+  min-width: 20px;
   padding: 0 6px;
   border-radius: 999px;
   background: var(--border-strong);
-  font-size: var(--text-xs);
+  font-size: 0.75rem;
   font-variant-numeric: tabular-nums;
 }
 
@@ -278,7 +445,7 @@
 .toolbar {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-2);
 }
 
 .search {
@@ -289,18 +456,19 @@
 
 .search__icon {
   position: absolute;
-  left: var(--space-3);
+  left: 11px;
   color: var(--text-muted);
   pointer-events: none;
 }
 
 .search input {
-  width: 200px;
-  height: 40px;
-  padding: 0 var(--space-3) 0 38px;
+  width: 170px;
+  height: 36px;
+  padding: 0 var(--space-3) 0 34px;
   border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--surface);
+  border-radius: 10px;
+  background: transparent;
+  font-size: var(--text-xs);
   outline: none;
   transition: border-color var(--fast), box-shadow var(--fast), width var(--normal) var(--ease);
 }
@@ -308,18 +476,16 @@
 .search input::placeholder { color: var(--text-muted); }
 
 .search input:focus {
-  width: 240px;
+  width: 210px;
   border-color: var(--accent);
   box-shadow: var(--glow);
 }
 
-.sort select { height: 40px; border-radius: 12px; }
-
 /* ---------- Task cards ---------- */
 .task-list {
   display: grid;
-  gap: var(--space-3);
-  margin: 0;
+  gap: var(--space-2);
+  margin: var(--space-3) 0 0;
   padding: 0;
   list-style: none;
 }
@@ -548,7 +714,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--space-2) var(--space-4);
+  gap: var(--space-2);
 }
 
 .edit-form__buttons {
@@ -606,6 +772,7 @@
   justify-content: space-between;
   align-items: center;
   gap: var(--space-4);
+  margin-top: var(--space-3);
   padding: var(--space-4) var(--space-5);
   border-color: var(--danger);
   color: var(--danger);
@@ -626,26 +793,19 @@
   .user-chip__email { display: none; }
   .user-chip { padding: var(--space-1); }
 
-  .board { padding: var(--space-5) var(--space-4) var(--space-7); gap: var(--space-4); }
+  .board { padding: var(--space-5) var(--space-4) var(--space-7); gap: var(--space-5); }
   .board__intro h1 { font-size: var(--text-xl); }
+  .board__head { flex-direction: column; align-items: stretch; gap: var(--space-4); }
+  .progress-card { justify-content: space-between; }
+  .mini-stats { flex: 1; justify-content: space-around; gap: var(--space-3); }
 
-  .stats { padding: var(--space-4); }
-  .stats dd { font-size: var(--text-lg); }
-  .stats__grid div + div { padding-left: var(--space-3); }
-
-  /* "display: contents" lets the title and button sit directly in the form,
-     so "order" can put the button after the options. */
-  .add-task { display: flex; flex-direction: column; }
-  .add-task__main { display: contents; }
-  .add-task__plus { display: none; }
-  .add-task__main input { order: 1; padding: 0 var(--space-2); }
-  .add-task__options { order: 2; }
-  .add-task__main .btn { order: 3; width: 100%; }
+  .composer { padding: var(--space-2); }
+  .composer__input { flex-basis: 100%; padding: 0 var(--space-2); }
+  .composer__tools { width: 100%; }
+  .composer__add { margin-left: auto; }
 
   .filters { display: flex; }
   .filters__btn { flex: 1; justify-content: center; padding: 0 var(--space-2); }
-
-  .sort span { display: none; } /* the select alone is clear enough */
 
   .task { padding-right: var(--space-2); }
   .task__actions { gap: 0; }
